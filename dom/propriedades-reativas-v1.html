@@ -1,0 +1,22 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<div id="app">
+    <p>Forma sem usar o v-model</p>
+    <p>{{ titulo }}</p>
+    <input type="text" v-bind:value="titulo" v-on:input="titulo = $event.target.value">
+    <hr>
+    <p>Forma usando o v-model</p>
+    <p>{{ tituloNovo }}</p>
+    <input type="text" v-model="tituloNovo">
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            titulo: 'Usando VueJS',
+            tituloNovo: 'Com o v-model'
+        }
+
+    })
+</script>
