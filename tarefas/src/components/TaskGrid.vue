@@ -1,13 +1,17 @@
 <template>
-    <div class="tasks">
+    <div class="task-grid">
         <template>
-            <div v-for="task in tasks" :key="task.name">{{ task.name }}</div>
+            <Task v-for="task in tasks" :key="task.name" :task="task"></Task>
         </template>
     </div>
 </template>
 
 <script>
+// importar o que preciso
+import Task from '@/components/Task.vue'
+
 export default {
+    components: { Task }, // registrar os componentes
     props: {
         tasks: {type: Array, required: true}
     }
