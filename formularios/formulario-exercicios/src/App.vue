@@ -26,8 +26,13 @@
 					<span><input type="radio" value="outro" v-model="produto"> Outro</span>
 				</Rotulo>
 				<Rotulo nome="Prioridade">
-					<select name="" id="">
-						<option></option>
+					<select v-model="prioridadeSelecionada">
+						<option v-for="prioridade in prioridades" 
+							:value="prioridade.codigo"
+							:selected="prioridade.codigo === 2"
+							:key="prioridade.codigo">
+							{{ prioridade.codigo }} - {{ prioridade.nome }}
+						</option>
 					</select>
 				</Rotulo>
 				<Rotulo nome="Primeira Reclamação?">
@@ -61,7 +66,7 @@
 					<span>{{ produto }}</span>
 				</Rotulo>
 				<Rotulo nome="Prioridade">
-					<span>???</span>
+					<span>{{ prioridadeSelecionada }} - Tipo: {{ tipoPrioridade }}</span>
 				</Rotulo>
 				<Rotulo nome="Primeira Reclamação?">
 					<span>???</span>
@@ -78,11 +83,22 @@ import Escolha from './components/Escolha.vue'
 export default {
 	name: 'app',
 	components: { Rotulo, Escolha },
+	computed: {
+		tipoPrioridade() {
+			return typeof this.prioridadeSelecionada
+		}
+	},
 	data() {
 		return {
 			mensagem: '',
 			caracteristicas: [], // usado para os checkbox
 			produto: 'web', // usado para campo radio
+			prioridadeSelecionada: 3,
+			prioridades: [
+				{codigo: 1, nome: 'Baixa'},
+				{codigo: 2, nome: 'Moderada'},
+				{codigo: 3, nome: 'Alta'},
+			],
 			usuario: {
 				email: '',
 				nome: '',
