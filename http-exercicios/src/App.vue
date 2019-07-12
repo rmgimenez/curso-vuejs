@@ -15,9 +15,10 @@
 			</b-form-group>
 
 			<hr>
+			<b-button variant="warning" size="lg" @click="novoRegistro">Novo registro</b-button>
 
 			<b-button @click.prevent="salvar"
-				size="lg" variant="primary">Salvar</b-button>
+				size="lg" variant="primary" class="ml-2">Salvar</b-button>
 			<b-button @click="obterUsuarios"
 				size="lg" variant="success"
 				class="ml-2">Obter usuários</b-button>
@@ -27,8 +28,9 @@
 			<b-list-group-item v-for="(usuario, id) in usuarios" :key="id">
 				<strong>Nome: </strong> {{ usuario.nome }} <br>
 				<strong>Email: </strong> {{ usuario.email }} <br>
-				<strong>ID: </strong> {{ id }}
-
+				<strong>ID: </strong> {{ id }} <br>
+				<b-button variant="warning" size="lg" @click="carregar(id)">Carregar</b-button>
+				<b-button variant="danger" size="lg" class="ml-2" @click="excluir(id)">Excluir</b-button>
 			</b-list-group-item>
 		</b-list-group>
 	</div>
@@ -39,6 +41,7 @@ export default {
 	data() {
 		return {
 			usuarios: [],
+			id: null, // representa o id do usuário selecionado
 			usuario: {
 				nome: '',
 				email: ''
@@ -46,12 +49,26 @@ export default {
 		}
 	},
 	methods: {
+		limpar() {
+			this.usuario.nome = ''
+			this.usuario.email = ''
+			this.id = null
+		},
+		novoRegistro() {
+			this.limpar()
+		},
+		carregar(id) {
+			this.id = id
+			this.usuario = { ...this.usuarios[id] }
+		},
+		excluir(id) {
+			this.$http.delete(`/usuarios/${id}.json`).then(() => this.limpar())
+		},
 		salvar() {
-			this.$http.post('usuarios.json', this.usuario)
-				.then(resp => {
-					this.usuario.nome = ''
-					this.usuario.email = ''
-				})
+			// se o id estiver com algum valor o método chamado será o patch, se não será chamado o método post
+			const metodo = this.id ? 'patch' : 'post'
+			const finalUrl = this.id ? `/${this.id}.json` : '.json'
+			this.$http[metodo](`usuarios${finalUrl}`, this.usuario).then(() => this.limpar())
 		},
 		obterUsuarios() {
 			this.$http.get('usuarios.json').then(res => {
