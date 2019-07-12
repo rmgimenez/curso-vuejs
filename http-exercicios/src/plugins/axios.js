@@ -1,11 +1,20 @@
 import Vue from 'vue'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://curso-vue-21647.firebaseio.com/'
+//axios.defaults.baseURL = 'https://curso-vue-21647.firebaseio.com/'
 
 Vue.use({
     install(Vue) {
-        Vue.prototype.$http = axios
+        // Vue.prototype.$http = axios
+        Vue.prototype.$http = axios.create({
+            baseURL: 'https://curso-vue-21647.firebaseio.com/',
+            headers: {
+                // da forma que está, todas as requisições get vão ter essa chave no header
+                get: {
+                    "Authorization": "abc123"
+                }
+            }
+        })
 
         Vue.prototype.$http.interceptors.request.use(config => {
             console.log(config.method)
