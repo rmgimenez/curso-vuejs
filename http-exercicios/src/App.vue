@@ -14,6 +14,12 @@
 					placeholder="Informe o email"></b-form-input>
 			</b-form-group>
 
+			<b-form-group label="Idade:">
+				<b-form-input type="text" size="lg"
+					v-model="usuario.idade"
+					placeholder="Informe a idade"></b-form-input>
+			</b-form-group>
+
 			<hr>
 			<b-button variant="warning" size="lg" @click="novoRegistro">Novo registro</b-button>
 
@@ -28,6 +34,7 @@
 			<b-list-group-item v-for="(usuario, id) in usuarios" :key="id">
 				<strong>Nome: </strong> {{ usuario.nome }} <br>
 				<strong>Email: </strong> {{ usuario.email }} <br>
+				<strong>Idade: </strong> {{ usuario.idade }} <br>
 				<strong>ID: </strong> {{ id }} <br>
 				<b-button variant="warning" size="lg" @click="carregar(id)">Carregar</b-button>
 				<b-button variant="danger" size="lg" class="ml-2" @click="excluir(id)">Excluir</b-button>
@@ -44,7 +51,8 @@ export default {
 			id: null, // representa o id do usuário selecionado
 			usuario: {
 				nome: '',
-				email: ''
+				email: '',
+				idade: 0
 			}
 		}
 	},
@@ -52,6 +60,7 @@ export default {
 		limpar() {
 			this.usuario.nome = ''
 			this.usuario.email = ''
+			this.usuario.idade = 0
 			this.id = null
 		},
 		novoRegistro() {
